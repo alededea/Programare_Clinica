@@ -18,6 +18,7 @@ namespace Programare_Clinica.Data
             _database.CreateTableAsync<ServiciuList>().Wait();
             _database.CreateTableAsync<Programare>().Wait();
             _database.CreateTableAsync<ListProgramare>().Wait();
+            _database.CreateTableAsync<Serviciu>().Wait();
 
         }
 
@@ -86,6 +87,25 @@ namespace Programare_Clinica.Data
             + " inner join ListProgramare LP"
             + " on P.ID = LP.ProgramareID where LP.ServiciuListID = ?",
             serviciulistid);
+        }
+        public Task<List<Serviciu>> GetServiciiAsync()
+        {
+            return _database.Table<Serviciu>().ToListAsync();
+        }
+        public Task<int> SaveServiciuAsync(Serviciu serviciu)
+        {
+            if (serviciu.ID != 0)
+            {
+                return _database.UpdateAsync(serviciu);
+            }
+            else
+            {
+                return _database.InsertAsync(serviciu);
+            }
+        }
+        public Task<int> DeleteServiciuAsync(Serviciu serviciu)
+        {
+            return _database.DeleteAsync(serviciu);
         }
     }
 }

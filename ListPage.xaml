@@ -3,24 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Programare_Clinica"
              x:Class="Programare_Clinica.ListPage"
-             Title="ListPage">
+             Title="Adauga Programare">
 
     <StackLayout Margin="20">
-        <!-- Editor existent pentru descrierea serviciului -->
-        <Editor Placeholder="Adauga descriere pentru serviciu"
-                Text="{Binding Descriere}"
-                HeightRequest="50" />
 
-        <!-- Noul Editor cu comportament de validare -->
-        <Editor Placeholder="Enter the description of the shopping list"
-                Text="{Binding Description}"
+        <Editor Placeholder="Explica de ce ai nevoie!"
+                Text="{Binding Descriere}"
                 HeightRequest="50">
             <Editor.Behaviors>
                 <local:ValidationBehaviour />
             </Editor.Behaviors>
         </Editor>
 
-        <!-- Layout pentru butoane -->
+        <Picker x:Name="ServiciuPicker" Title="Alege serviciul dorit"/>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -33,17 +29,17 @@
                     Clicked="OnDeleteButtonClicked"/>
         </Grid>
 
-        <!-- ListView pentru afișarea listei de servicii/programări -->
+        
         <ListView x:Name="listView"
                   Margin="20">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Descri}" />
+                    <TextCell Text="{Binding Descriere}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <!-- Buton pentru adăugare/alegere programare -->
+
         <Button Text="Add/Choose Programare"
                 MaximumWidthRequest="300"
                 Clicked="OnChooseButtonClicked"/>

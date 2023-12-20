@@ -12,6 +12,8 @@ public partial class ListPage : ContentPage
     {
         var slist = (ServiciuList)BindingContext;
         slist.Date = DateTime.UtcNow;
+        Serviciu selectedServiciu = (ServiciuPicker.SelectedItem as Serviciu);
+        slist.ServiciuID = selectedServiciu.ID;
         await App.Database.SaveServiciuListAsync(slist);
         await Navigation.PopAsync();
     }
@@ -32,6 +34,11 @@ public partial class ListPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        var items = await App.Database.GetServiciiAsync();
+        ServiciuPicker.ItemsSource = (System.Collections.IList)items;
+        ServiciuPicker.ItemDisplayBinding = new Binding("ServiciuDetails");
+
         var serviciul = (ServiciuList)BindingContext;
 
         listView.ItemsSource = await App.Database.GetListProgramariAsync(serviciul.ID);
