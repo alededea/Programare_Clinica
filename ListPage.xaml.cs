@@ -21,4 +21,19 @@ public partial class ListPage : ContentPage
         await App.Database.DeleteServiciuListAsync(slist);
         await Navigation.PopAsync();
     }
+    async void OnChooseButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ProgramarePage((ServiciuList)
+       this.BindingContext)
+        {
+            BindingContext = new Programare()
+        });
+    }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        var serviciul = (ServiciuList)BindingContext;
+
+        listView.ItemsSource = await App.Database.GetListProgramariAsync(serviciul.ID);
+    }
 }

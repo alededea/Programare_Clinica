@@ -16,6 +16,9 @@ namespace Programare_Clinica.Data
         {
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<ServiciuList>().Wait();
+            _database.CreateTableAsync<Programare>().Wait();
+            _database.CreateTableAsync<ListProgramare>().Wait();
+
         }
 
         public Task<List<ServiciuList>> GetServiciuListsAsync()
@@ -45,6 +48,44 @@ namespace Programare_Clinica.Data
         public Task<int> DeleteServiciuListAsync(ServiciuList slist)
         {
             return _database.DeleteAsync(slist);
+        }
+        public Task<int> SaveProgramareAsync(Programare Programare)
+        {
+            if (Programare.ID != 0)
+            {
+                return _database.UpdateAsync(Programare);
+            }
+            else
+            {
+                return _database.InsertAsync(Programare);
+            }
+        }
+        public Task<int> DeleteProgramareAsync(Programare Programare)
+        {
+            return _database.DeleteAsync(Programare);
+        }
+        public Task<List<Programare>> GetProgramariAsync()
+        {
+            return _database.Table<Programare>().ToListAsync();
+        }
+        public Task<int> SaveListProgramareAsync(ListProgramare listp)
+        {
+            if (listp.ID != 0)
+            {
+                return _database.UpdateAsync(listp);
+            }
+            else
+            {
+                return _database.InsertAsync(listp);
+            }
+        }
+        public Task<List<Programare>> GetListProgramariAsync(int serviciulistid)
+        {
+                return _database.QueryAsync<Programare>(
+            "select P.ID, P.Descriere from Programare P"
+            + " inner join ListProgramare LP"
+            + " on P.ID = LP.ProgramareID where LP.ServiciuListID = ?",
+            serviciulistid);
         }
     }
 }
